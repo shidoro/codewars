@@ -85,17 +85,3 @@ const maxMin = (arr1, arr2) =>
     arr1.map((n, i) => Math.abs(n - arr2[i]))
   );
 ```
-
-```js
-const maxMin = (arr1, arr2) =>
-  arr1.reduce(
-    ([max, min], v, i) => (
-      [
-        (max = Math.max(Math.abs(v - arr2[i]), max)),
-        (min = Math.min(Math.abs(v - arr2[i]), min)),
-      ],
-      [max, min]
-    ),
-    [0, Infinity]
-  );
-```
