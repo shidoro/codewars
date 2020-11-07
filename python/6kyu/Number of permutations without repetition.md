@@ -1,0 +1,44 @@
+# Description
+
+Write a function that takes a number or a string and gives back the number of **permutations without repetitions** that can generated using all of its element.; more on permutations [here](https://en.wikipedia.org/wiki/Permutation).
+
+For example, starting with:
+
+```
+1
+45
+115
+"abc"
+```
+
+You could respectively generate:
+
+```
+1
+45,54
+115,151,511
+"abc","acb","bac","bca","cab","cba"
+```
+
+So you should have, in turn:
+
+```py
+perms(1) == 1;
+perms(45) == 2;
+perms(115) == 3;
+perms("abc") == 6;
+```
+
+---
+
+## Solution
+
+```py
+from functools import reduce
+from math import factorial
+from collections import Counter
+from operator import mul
+
+def perms(e):
+    return factorial(len(str(e))) / reduce(mul, map(factorial, Counter(str(e)).values()), 1)
+```
