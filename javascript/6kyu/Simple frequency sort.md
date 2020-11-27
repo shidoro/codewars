@@ -17,24 +17,25 @@ Good luck!
 
 ```js
 const curry = (fn, arity = fn.length) =>
-  (nextCurried = (prevArgs) => (...nextArgs) => (
-    (args = [...prevArgs, ...nextArgs]),
-    args.length < arity ? nextCurried(args) : fn(...args)
-  ))([]);
+  (function nextCurried(prevArgs) {
+    return (...nextArgs) => (
+      (args = [...prevArgs, ...nextArgs]),
+      args.length < arity ? nextCurried(args) : fn(...args)
+    );
+  })([]);
 
 const reduce = curry((fn, initial, arr) => arr.reduce(fn, initial));
-const sort = curry((fn, arr) => arr.sort(fn));
+const sort = curry((fn, [...arr]) => arr.sort(fn));
 const map = curry((fn, arr) => arr.map(fn));
 
-const count = (arr) =>
-  reduce((acc, v) => ((acc[v] = ++acc[v] || 1), acc), {}, arr);
-
-const entries = (arr) => Object.entries(arr);
-const freqSort = (arr) => sort(([k, m], [p, n]) => n - m || k - p, arr);
-const extend = (arr) => map(([m, n]) => Array(n).fill(+m), arr);
-const flat = (arr) => reduce((acc, v) => acc.concat(v), [], arr);
+const count = reduce((acc, v) => ((acc[v] = ++acc[v] || 1), acc));
+const entries = Object.entries;
+const freqSort = sort(([k, m], [p, n]) => n - m || k - p);
+const extend = map(([m, n]) => Array(n).fill(+m));
+const flat = reduce((acc, v) => acc.concat(v), []);
 const pipe = (...fns) =>
   fns.reduce((fn1, fn2) => (...args) => fn2(fn1(...args)));
 
-const solve = ([...arr]) => pipe(count, entries, freqSort, extend, flat)(arr);
+const solve = ([...arr]) =>
+  pipe(count({}), entries, freqSort, extend, flat)(arr);
 ```
