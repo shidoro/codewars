@@ -19,5 +19,5 @@ time = 11.8--> litres = 5
 ## Solution
 
 ```js
-const litres = (n) => (n * 0.5) | 0;
+const litres = (n) => n >> 1;
 ```
